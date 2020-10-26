@@ -1,0 +1,150 @@
+{include file='pubilc/head' /}
+
+<body>
+<div class="layui-fluid">
+    <div class="layui-row">
+        <form class="layui-form">
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">上午考勤时间</label>
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <input type="text" name="amtime1" value="{$amtime1}" class="layui-input" id="test-laydate-type-time1" placeholder="开始时间" lay-verify="required" >
+                    </div>
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <input type="number" name="amtime2" value="{$amtime2}" placeholder="缓冲时间" autocomplete="off" class="layui-input" lay-verify="required" >
+                    </div>
+                    <div class="layui-form-mid">-</div>
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <input type="text" name="amtime3" value="{$amtime3}" class="layui-input" id="test-laydate-type-time2" placeholder="结束时间" lay-verify="required" >
+                    </div>
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <input type="number" name="amtime4" value="{$amtime4}" placeholder="缓冲时间" autocomplete="off" class="layui-input" lay-verify="required" >
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">下午考勤时间</label>
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <input type="text" name="pmtime1" value="{$pmtime1}" class="layui-input" id="test-laydate-type-time3" placeholder="开始时间" lay-verify="required" >
+                    </div>
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <input type="number" name="pmtime2" value="{$pmtime2}" placeholder="缓冲时间" autocomplete="off" class="layui-input" lay-verify="required" >
+                    </div>
+                    <div class="layui-form-mid">-</div>
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <input type="text" name="pmtime3" value="{$pmtime3}" class="layui-input" id="test-laydate-type-time4" placeholder="结束时间" lay-verify="required" >
+                    </div>
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <input type="number" name="pmtime4" value="{$pmtime4}" placeholder="缓冲时间" autocomplete="off" class="layui-input" lay-verify="required" >
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">晚上考勤时间</label>
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <input type="text" name="ngtime1" value="{$ngtime1}" class="layui-input" id="test-laydate-type-time5" placeholder="开始时间" lay-verify="required" >
+                    </div>
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <input type="number" name="ngtime2" value="{$ngtime2}" placeholder="缓冲时间" autocomplete="off" class="layui-input" lay-verify="required" >
+                    </div>
+                    <div class="layui-form-mid">-</div>
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <input type="text" name="ngtime3" value="{$ngtime3}" class="layui-input" id="test-laydate-type-time6" placeholder="结束时间" lay-verify="required" >
+                    </div>
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <input type="number" name="ngtime4" value="{$ngtime4}" placeholder="缓冲时间" autocomplete="off" class="layui-input" lay-verify="required" >
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label for="module" class="layui-form-label">
+                    <span class="x-red">*</span>年级名称</label>
+                <div class="layui-input-inline">
+                    <select name="grade_id" lay-verify="required" lay-search="">
+                        <option value="">直接选择或搜索选择</option>
+
+                        {volist name="list" id="vo"}
+                        <option value="{$vo.id}"  {$vo.time_id == $id?'selected':''}>{$vo.title}</option>
+                        {/volist}
+
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <label for="L_repass" class="layui-form-label"></label>
+                <input type="hidden" value="{$id}" name="id">
+                <button class="layui-btn" lay-filter="add" lay-submit="">更新</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>layui.use(['form', 'layer', 'jquery', 'laydate'],
+    function () {
+        $ = layui.jquery;
+        var form = layui.form,
+            laydate = layui.laydate,
+            layer = layui.layer;
+
+        //时间选择器
+        laydate.render({
+            elem: '#test-laydate-type-time1'
+            , type: 'time'
+        });
+        laydate.render({
+            elem: '#test-laydate-type-time2'
+            , type: 'time'
+        });
+        laydate.render({
+            elem: '#test-laydate-type-time3'
+            , type: 'time'
+        });
+        laydate.render({
+            elem: '#test-laydate-type-time4'
+            , type: 'time'
+        });
+        laydate.render({
+            elem: '#test-laydate-type-time5'
+            , type: 'time'
+        });
+        laydate.render({
+            elem: '#test-laydate-type-time6'
+            , type: 'time'
+        });
+
+        //监听提交
+        form.on('submit(add)',
+            function (data) {
+                console.log(data);
+                //发异步，把数据提交给php
+                $.post('/admin/Attendance/edit', data.field, function (res) {
+                    if (res.code == 1) {
+                        layer.alert("更新成功", {
+                                icon: 6
+                            },
+                            function () {
+                                //关闭当前frame
+                                xadmin.close();
+
+                                // 可以对父窗口进行刷新
+                                xadmin.father_reload();
+                            });
+                    } else {
+                        layer.alert(res.msg, {icon: 5})
+                    }
+                })
+
+                return false;
+            });
+
+    });</script>
+</body>
+
+</html>

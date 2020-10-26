@@ -1,0 +1,241 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>校园大数据展示</title>
+    <script type="text/javascript" src="__STATIC__/big/js/jquery.js"></script>
+    <script type="text/javascript" src="__STATIC__/big/js/echarts.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/big/js/js.js"></script>
+    <script type="text/javascript" src="__STATIC__/big/js/jquery.limarquee.js"></script>
+    <script type="text/javascript" src="__STATIC__/big/js/jquery.cxselect.min.js"></script>
+
+    <link rel="stylesheet" href="__STATIC__/big/css/comon0.css">
+</head>
+<body>
+<div style="background:#000d4a url(__STATIC__/big/images/bg.jpg) center top;">
+    <div class="loading">
+        <div class="loadbox"> <img src="__STATIC__/big/picture/loading.gif"> 页面加载中... </div>
+    </div>
+    <div class="back"></div>
+    <div class="head">
+        <div class="weather"><span id="showTime"></span></div>
+        <h1 >大数据可视化展示平台</h1>
+
+    </div>
+    <script>
+        var t = null;
+        t = setTimeout(time,1000);//開始运行
+        function time()
+        {
+            clearTimeout(t);//清除定时器
+            dt = new Date();
+            var y=dt.getFullYear();
+            var mt=dt.getMonth()+1;
+            var day=dt.getDate();
+            var h=dt.getHours();//获取时
+            var m=dt.getMinutes();//获取分
+            var s=dt.getSeconds();//获取秒
+            document.getElementById("showTime").innerHTML = y+"年"+mt+"月"+day+"日"+h+"时"+m+"分"+s+"秒";
+            t = setTimeout(time,1000); //设定定时器，循环运行
+        }
+
+    </script>
+    <div class="mainbox">
+        <ul class="clearfix">
+            <li>
+                <div class="boxall" style="height:400px;">
+                    <div class="alltitle">当天班级出勤统计</div>
+                    <div class="navboxall" id="echart5"></div>
+                </div>
+                <div class="boxall" style="height:260px;">
+                    <div class="alltitle">实时打卡数据</div>
+                    <div class="navboxall" >
+                        <div class="wraptit">
+                            <span>姓名</span><span>年级</span><span>时间</span>
+                        </div>
+                        <div class="wrap">
+                            <ul id="api5">
+
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="boxall" style="height:260px;">
+                    <div class="alltitle">进口机器使用情况</div>
+
+                    <div class="navboxall" id="echart1"></div>
+                </div>
+            </li>
+            <li>
+
+                <div class="boxall" style="height:230px">
+                    <div class="clearfix navboxall" style="height: 100%">
+                        <div class="pulll_left num">
+                            <div class="numbt">总人数</div>
+                            <div class="numtxt" id="numbtCount">19382721 </div>
+                        </div>
+                        <div class="pulll_right zhibiao">
+                            <div class="zb1"><span>正常打卡</span><div id="zb1"></div></div>
+                            <div class="zb2"><span>迟到早退</span><div id="zb2"></div></div>
+                            <div class="zb3"><span>其他</span><div id="zb3"></div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="boxall" style="height:350px">
+                    <div class="alltitle">一周打卡情况</div>
+                    <div class="navboxall" id="echart4"></div>
+
+                </div>
+                <div class="boxall" style="height:340px">
+                    <div class="alltitle">一年打卡情况</div>
+                    <div class="navboxall" id="echart3"></div>
+                </div>
+            </li>
+            <li>
+                <div class="boxall" style="height:300px">
+                    <div class="alltitle">本周考勤优秀班级</div>
+                    <div class="navboxall">
+                        <table class="table1" width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tbody id="apiweek">
+                            <tr>
+                                <th scope="col">班级名称</th>
+                                <th scope="col">班级人数</th>
+                                <th scope="col">打卡次数</th>
+                            </tr>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="boxall" style="height: 300px">
+                    <div class="alltitle">本月考勤优秀班级</div>
+                    <div class="navboxall">
+                        <table class="table1" width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tbody  id="apimonth">
+                            <tr>
+                                <th scope="col">班级名称</th>
+                                <th scope="col">班级人数</th>
+                                <th scope="col">打卡次数</th>
+                            </tr>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+                <div class="boxall" style="height:320px">
+                    <div class="alltitle">出口机器使用情况</div>
+                    <div class="navboxall" id="echart2"></div>
+                </div>
+
+
+            </li>
+        </ul>
+
+    </div>
+</div>
+
+<script>
+    $(function(){
+        $('.wrap,.adduser').liMarquee({
+            direction: 'up',//身上滚动
+            runshort: false,//内容不足时不滚动
+            scrollamount: 20//速度
+        });
+    });
+
+    var t5 = null;
+    t5 = setTimeout(getapi5,1000);//開始运行
+    function getapi5() {
+        clearTimeout(t5);//清除定时器
+        //中间统计
+        $.get(
+            "/admin/big/api5",
+            function (res) {
+
+                if (res.code == 1) {
+
+
+
+                    for(var i in res.data) {
+                        console.log(res.data[i])
+
+                        li_html = "<li><p><span>"+ res.data[i].name +"</span><span>"+ res.data[i].title +"</span><span>"+ res.data[i].addtime +"</span></p></li>"
+
+                        $("#api5").append(li_html)
+
+                        num  = $("#api5 li").length
+
+                        if(num > 21){
+                            $("#api5 li:first").remove()
+                        }
+
+
+                    };
+                }
+
+                $('.wrap,.adduser').liMarquee({
+                    direction: 'up',//身上滚动
+                    runshort: false,//内容不足时不滚动
+                    scrollamount: 20//速度
+                });
+
+            }
+        )
+        t = setTimeout(getapi5,120000); //设定定时器，循环运行
+    }
+
+    api6week()
+    function api6week() {
+        $.get(
+            "/admin/big/api6",
+            function (res) {
+
+                if (res.code == 1) {
+
+                    for(var i in res.data.A) {
+                        a = res.data.A[i]
+                        b = res.data.B[i]
+
+                        if(i>4){
+                            continue;
+                        }
+
+                        td1 = '<tr>\n' +
+                            '                                <td>' + a.n + '</td>\n' +
+                            '                                <td>' + a.y + '</td>\n' +
+                            '                                <td>' + a.s + '</td>\n' +
+                            '                            </tr>'
+
+                        td2 = '<tr>\n' +
+                            '                                <td>' + b.n + '</td>\n' +
+                            '                                <td>' + b.y + '</td>\n' +
+                            '                                <td>' + b.s + '</td>\n' +
+                            '                            </tr>'
+
+                        $('#apiweek').append(td1)
+                        $('#apimonth').append(td2)
+                    }
+
+                    console.log(td1)
+
+
+                }
+
+
+            }
+        )
+    }
+
+
+
+
+</script>
+
+</body>
+</html>

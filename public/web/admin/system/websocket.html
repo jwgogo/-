@@ -1,0 +1,95 @@
+{include file='pubilc/head' /}
+
+<body>
+<div class="x-nav">
+            <span class="layui-breadcrumb">
+                <a href="">后台</a>
+                <a href="">系统设置</a>
+                <a>
+                    <cite>websocket</cite>
+                </a>
+            </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+       onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+    </a>
+</div>
+<div class="layui-fluid">
+
+    <div class="layui-row">
+        <form class="layui-form" lay-filter="formTest">
+
+            <div class="layui-form-item">
+                <label for="launch" class="layui-form-label">
+                    <span class="x-red"></span>IP</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" value="{$ip|default=''}">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label for="launch" class="layui-form-label">
+                    <span class="x-red"></span>PORT</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" value="{$port|default=''}">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label for="launch" class="layui-form-label">
+                    <span class="x-red"></span>PID</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" id="pid" value="{$pid|default=''}">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label for="launch" class="layui-form-label">
+                    <span class="x-red"></span>关闭命令</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" value="{$cmd1|default='未知'}">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label for="launch" class="layui-form-label">
+                    <span class="x-red"></span>启动命令</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" value="{$cmd2|default='未知'}">
+                </div>
+            </div>
+
+
+
+
+        </form>
+    </div>
+</div>
+</body>
+<script>
+
+    // layui.use(['table', 'form', 'laydate'], function () {
+    //     //启动
+    //     $('#start').click(function () {
+    //
+    //     })
+    //
+    //     //关闭
+    //     $('#close').click(function () {
+    //
+    //         $.post('/admin/System/serveClose', {'pid': $('#pid').val()}, function (res) {
+    //             console.log(res)
+    //             if (res.code == 1) {
+    //                 layer.msg(res.msg, {icon: 1})
+    //             } else {
+    //                 layer.alert(res.msg, {icon: 5})
+    //             }
+    //
+    //         }, 'json');
+    //
+    //
+    //     })
+    // })
+
+</script>
+</html>

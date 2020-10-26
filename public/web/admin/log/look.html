@@ -1,0 +1,87 @@
+{include file='pubilc/head' /}
+
+<body>
+<div class="layui-fluid">
+    <div class="layui-row">
+        <form class="layui-form" lay-filter="formTest">
+
+            <div class="layui-form-item">
+                <label for="email" class="layui-form-label">
+                    时间
+                </label>
+                <div class="layui-input-block">
+                    <input autocomplete="off" class="layui-input" value="{:date('Y-m-d H:i:s')}">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label for="username" class="layui-form-label">
+                    账号
+                </label>
+                <div class="layui-input-block">
+                    <input autocomplete="off" class="layui-input" value="{$account|default='未登录' }">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label for="mobile" class="layui-form-label">
+                    IP
+                </label>
+                <div class="layui-input-block">
+                    <input autocomplete="off" class="layui-input" value="{$ip|default='ip' }">
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <label for="qq" class="layui-form-label">
+                    流信息
+                </label>
+                <div class="layui-input-block">
+                    <input autocomplete="off" class="layui-input" value="{$getInput|default='无' }">
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label for="account" class="layui-form-label">
+                    请求参数
+                </label>
+                <div class="layui-input-block">
+                    <textarea  class="layui-textarea">{$param|default='' }</textarea>
+                </div>
+
+            </div>
+
+            <div class="layui-form-item">
+                <label for="account" class="layui-form-label">
+                    请求头
+                </label>
+                <div class="layui-input-block">
+                    <textarea  class="layui-textarea" >{$header|default='请求头' }</textarea>
+                </div>
+
+            </div>
+
+            <div class="layui-form-item">
+                <label for="account" class="layui-form-label">
+                    是否蜘蛛
+                </label>
+                <div class="layui-input-block">
+                    <textarea  class="layui-textarea">{$agent|default='否' }</textarea>
+                </div>
+
+            </div>
+
+
+
+
+
+        </form>
+    </div>
+</div>
+
+</body>
+
+</html>

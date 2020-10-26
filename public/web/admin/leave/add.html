@@ -1,0 +1,108 @@
+{include file='pubilc/head' /}
+
+<div class="layui-fluid">
+    <div class="layui-row">
+        <form class="layui-form">
+
+
+            <div class="layui-form-item">
+                <label for="L_name" class="layui-form-label">
+                    <span class="x-red">*</span>姓名</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="L_name" value="{$student.name}" autocomplete="off" class="layui-input" disabled>
+                    <input type="hidden" name="s_id" value="{$student.id}" >
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <label for="L_card" class="layui-form-label">
+                    <span class="x-red">*</span>请假类型</label>
+                <div class="input-inline">
+                    <input type="radio" name="type" value="1" title="请假" class="layui-input" checked>
+                    <input type="radio" name="type" value="2" title="休学" class="layui-input">
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <label for="laydate-type-start" class="layui-form-label">
+                    <span class="x-red">*</span>开始时间</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="start" class="layui-input" id="laydate-type-start" placeholder="开始时间"
+                           lay-verify="required">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label for="laydate-type-end" class="layui-form-label">
+                    <span class="x-red">*</span>结束时间</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="end" class="layui-input" id="laydate-type-end" placeholder="结束时间"
+                           lay-verify="required">
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <label for="L_remark" class="layui-form-label">
+                    <span class="x-red">*</span>备注</label>
+                <div class="layui-input-inline">
+                    <textarea placeholder="请输入内容" class="layui-textarea" name="mark" required=""></textarea>
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <label for="L_repass" class="layui-form-label"></label>
+                <button class="layui-btn" lay-filter="add" lay-submit="">增加</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>layui.use(['form', 'layer', 'jquery', 'laydate'],
+    function () {
+        $ = layui.jquery;
+        var form = layui.form,
+            laydate = layui.laydate,
+            layer = layui.layer;
+
+        //日期时间选择器
+        laydate.render({
+            elem: '#laydate-type-start'
+            , type: 'datetime'
+        });
+
+        //日期时间选择器
+        laydate.render({
+            elem: '#laydate-type-end'
+            , type: 'datetime'
+        });
+
+        //监听提交
+        form.on('submit(add)',
+            function (data) {
+                console.log(data);
+                //发异步，把数据提交给php
+                $.post('/admin/Leave/add', data.field, function (res) {
+                    if (res.code == 1) {
+                        layer.alert("增加成功", {
+                                icon: 6
+                            },
+                            function () {
+                                //关闭当前frame
+                                xadmin.close();
+
+                                // 可以对父窗口进行刷新
+                                xadmin.father_reload();
+                            });
+                    } else {
+                        layer.alert(res.msg, {icon: 5})
+                    }
+                })
+
+                return false;
+            });
+
+    });</script>
+
